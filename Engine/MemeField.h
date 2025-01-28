@@ -15,7 +15,9 @@ class MemeField
 	public:
 		void Draw(const Vei2& gridPos, Graphics& gfx) const;
 		void Reveal();
-		bool IsRevealed() const;
+		bool HasRevealed() const;
+		void ToggleFlag();
+		bool HasFlagged() const;
 		void SpawnMeme();
 		bool HasMeme() const;
 	private:
@@ -29,6 +31,7 @@ public:
 	const Tile& TileAt(const Vei2& gridPos) const;
 	Tile& TileAt(const Vei2& gridPos);
 	void OnRevealClick(const Vei2& screenPos);
+	void OnFlagClick(const Vei2& screenPos);
 	bool Contains(const Vei2& screenPos) const;
 	Vei2 ScreenToGrid(const Vei2& screenPos) const;
 
