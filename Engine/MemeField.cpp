@@ -168,7 +168,6 @@ void MemeField::Tile::Draw(const Vei2& gridPos, bool isFucked, Graphics& gfx) co
 			if (HasMeme())
 			{
 				SpriteCodex::DrawTileBombRed(gridPos, gfx);
-				SpriteCodex::DrawTileBomb(gridPos, gfx);
 			}
 			else
 			{
