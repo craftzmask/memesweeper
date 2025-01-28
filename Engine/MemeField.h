@@ -22,8 +22,6 @@ class MemeField
 		bool HasMeme() const;
 		void SetNeighborMemes(int nMemes);
 	private:
-		void DrawTileNumber(const Vei2& gridPos, int n, Graphics& gfx) const;
-	private:
 		State state = State::Hidden;
 		bool hasMeme = false;
 		int nNeighborMemes = -1;

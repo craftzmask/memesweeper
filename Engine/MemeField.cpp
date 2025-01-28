@@ -133,7 +133,7 @@ void MemeField::Tile::Draw(const Vei2& gridPos, bool isFucked, Graphics& gfx) co
 			}
 			else
 			{
-				DrawTileNumber(gridPos, nNeighborMemes, gfx);
+				SpriteCodex::DrawTileNumber(gridPos, nNeighborMemes, gfx);
 			}
 			break;
 		}
@@ -172,7 +172,7 @@ void MemeField::Tile::Draw(const Vei2& gridPos, bool isFucked, Graphics& gfx) co
 			}
 			else
 			{
-				DrawTileNumber(gridPos, nNeighborMemes, gfx);
+				SpriteCodex::DrawTileNumber(gridPos, nNeighborMemes, gfx);
 			}
 			break;
 		}
@@ -224,38 +224,4 @@ void MemeField::Tile::SetNeighborMemes(int nMemes)
 {
 	assert(nNeighborMemes == -1);
 	nNeighborMemes = nMemes;
-}
-
-void MemeField::Tile::DrawTileNumber(const Vei2& gridPos, int n, Graphics& gfx) const
-{
-	switch (n)
-	{
-	case 0:
-		SpriteCodex::DrawTile0(gridPos, gfx);
-		break;
-	case 1:
-		SpriteCodex::DrawTile1(gridPos, gfx);
-		break;
-	case 2:
-		SpriteCodex::DrawTile2(gridPos, gfx);
-		break;
-	case 3:
-		SpriteCodex::DrawTile3(gridPos, gfx);
-		break;
-	case 4:
-		SpriteCodex::DrawTile4(gridPos, gfx);
-		break;
-	case 5:
-		SpriteCodex::DrawTile5(gridPos, gfx);
-		break;
-	case 6:
-		SpriteCodex::DrawTile6(gridPos, gfx);
-		break;
-	case 7:
-		SpriteCodex::DrawTile7(gridPos, gfx);
-		break;
-	case 8:
-		SpriteCodex::DrawTile8(gridPos, gfx);
-		break;
-	}
 }
