@@ -65,15 +65,7 @@ void MemeField::OnRevealClick(const Vei2& screenPos)
 {
 	assert(Contains(screenPos));
 	const Vei2 gridPos = ScreenToGrid(screenPos);
-	Tile& tile = TileAt(gridPos);
-	if (!tile.HasRevealed() && !tile.HasFlagged())
-	{
-		tile.Reveal();
-		if (tile.HasMeme())
-		{
-			isFucked = true;
-		}
-	}
+	RevealTile(gridPos);
 }
 
 void MemeField::OnFlagClick(const Vei2& screenPos)
@@ -141,6 +133,34 @@ int MemeField::GetHiddenTiles() const
 		}
 	}
 	return count;
+}
+
+void MemeField::RevealTile(const Vei2& gridPos)
+{
+	Tile& tile = TileAt(gridPos);
+	if (!tile.HasRevealed() && !tile.HasFlagged())
+	{
+		tile.Reveal();
+		if (tile.HasMeme())
+		{
+			isFucked = true;
+		}
+		else if (tile.HasNoNeighborMemes())
+		{
+			const int xStart = std::max(0, gridPos.x - 1);
+			const int yStart = std::max(0, gridPos.y - 1);
+			const int xEnd = std::min(width - 1, gridPos.x + 1);
+			const int yEnd = std::min(height - 1, gridPos.y + 1);
+
+			for (int y = yStart; y <= yEnd; y++)
+			{
+				for (int x = xStart; x <= xEnd; x++)
+				{
+					RevealTile({ x, y });
+				}
+			}
+		}
+	}
 }
 
 void MemeField::Tile::Draw(const Vei2& gridPos, bool isFucked, Graphics& gfx) const
@@ -253,4 +273,9 @@ void MemeField::Tile::SetNeighborMemes(int nMemes)
 {
 	assert(nNeighborMemes == -1);
 	nNeighborMemes = nMemes;
+}
+
+bool MemeField::Tile::HasNoNeighborMemes() const
+{
+	return nNeighborMemes == 0;
 }

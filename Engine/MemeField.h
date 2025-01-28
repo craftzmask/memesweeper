@@ -21,6 +21,7 @@ class MemeField
 		void SpawnMeme();
 		bool HasMeme() const;
 		void SetNeighborMemes(int nMemes);
+		bool HasNoNeighborMemes() const;
 	private:
 		State state = State::Hidden;
 		bool hasMeme = false;
@@ -39,12 +40,14 @@ public:
 	int GetNeightborMemes(const Vei2& gridPos) const;
 	bool IsFucked() const;
 	int GetHiddenTiles() const;
+private:
+	void RevealTile(const Vei2& gridPos);
 
 private:
 	static constexpr Color borderColor = Colors::Blue;
 	static constexpr int borderWidth = 10;
-	static constexpr int width = 6;
-	static constexpr int height = 4;
+	static constexpr int width = 12;
+	static constexpr int height = 8;
 	Vei2 pos = { 400, 300 }; // center of the screen
 	Tile field[width * height];
 	bool isFucked = false;
