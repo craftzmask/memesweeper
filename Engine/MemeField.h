@@ -42,8 +42,8 @@ public:
 private:
 	static constexpr Color borderColor = Colors::Blue;
 	static constexpr int borderWidth = 10;
-	static constexpr int width = 20;
-	static constexpr int height = 20;
+	static constexpr int width = 6;
+	static constexpr int height = 4;
 	Vei2 pos = { 400, 300 }; // center of the screen
 	Tile field[width * height];
 	bool isFucked = false;
