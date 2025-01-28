@@ -38,6 +38,7 @@ public:
 	Vei2 ScreenToGrid(const Vei2& screenPos) const;
 	int GetNeightborMemes(const Vei2& gridPos) const;
 	bool IsFucked() const;
+	int GetHiddenTiles() const;
 
 private:
 	static constexpr Color borderColor = Colors::Blue;

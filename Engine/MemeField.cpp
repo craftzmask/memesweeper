@@ -126,6 +126,23 @@ bool MemeField::IsFucked() const
 	return isFucked;
 }
 
+int MemeField::GetHiddenTiles() const
+{
+	int count = 0;
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			const Tile& tile = TileAt({ x, y });
+			if (!tile.HasRevealed())
+			{
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
 void MemeField::Tile::Draw(const Vei2& gridPos, bool isFucked, Graphics& gfx) const
 {
 	if (!isFucked)

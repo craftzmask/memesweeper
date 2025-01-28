@@ -20,6 +20,7 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "SpriteCodex.h"
 
 Game::Game( MainWindow& wnd )
 	:
@@ -39,7 +40,7 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if (!field.IsFucked())
+	if (!field.IsFucked() && !gameWon)
 	{
 		while (!wnd.mouse.IsEmpty())
 		{
@@ -61,10 +62,20 @@ void Game::UpdateModel()
 				}
 			}
 		}
+
+		if (field.GetHiddenTiles() == 1)
+		{
+			gameWon = true;
+		}
 	}
 }
 
 void Game::ComposeFrame()
 {
 	field.Draw(gfx);
+
+	if (gameWon)
+	{
+		SpriteCodex::DrawWin({ 400, 300 }, gfx);
+	}
 }
