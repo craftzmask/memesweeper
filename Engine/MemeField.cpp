@@ -3,6 +3,7 @@
 #include "assert.h"
 #include "SpriteCodex.h"
 #include <random>
+#include <algorithm>
 
 MemeField::MemeField(int nMemes)
 {
@@ -20,6 +21,15 @@ MemeField::MemeField(int nMemes)
 		} while (field[index].HasMeme());
 
 		field[index].SpawnMeme();
+	}
+
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			const Vei2 gridPos = { x, y };
+			TileAt(gridPos).SetNeighborMemes(GetNeightborMemes(gridPos));
+		}
 	}
 }
 
@@ -82,6 +92,27 @@ Vei2 MemeField::ScreenToGrid(const Vei2& screenPos) const
 	return screenPos / SpriteCodex::tileSize;
 }
 
+int MemeField::GetNeightborMemes(const Vei2& gridPos) const
+{
+	const int xStart = std::max(0, gridPos.x - 1);
+	const int yStart = std::max(0, gridPos.y - 1);
+	const int xEnd = std::min(width - 1, gridPos.x + 1);
+	const int yEnd = std::min(height - 1, gridPos.y + 1);
+
+	int count = 0;
+	for (int y = yStart; y <= yEnd; y++)
+	{
+		for (int x = xStart; x <= xEnd; x++)
+		{
+			if (TileAt({ x, y }).HasMeme())
+			{
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
 void MemeField::Tile::Draw(const Vei2& gridPos, bool isFucked, Graphics& gfx) const
 {
 	if (!isFucked)
@@ -102,7 +133,7 @@ void MemeField::Tile::Draw(const Vei2& gridPos, bool isFucked, Graphics& gfx) co
 			}
 			else
 			{
-				SpriteCodex::DrawTile0(gridPos, gfx);
+				DrawTileNumber(gridPos, nNeighborMemes, gfx);
 			}
 			break;
 		}
@@ -141,7 +172,7 @@ void MemeField::Tile::Draw(const Vei2& gridPos, bool isFucked, Graphics& gfx) co
 			}
 			else
 			{
-				SpriteCodex::DrawTile0(gridPos, gfx);
+				DrawTileNumber(gridPos, nNeighborMemes, gfx);
 			}
 			break;
 		}
@@ -187,4 +218,44 @@ void MemeField::Tile::SpawnMeme()
 bool MemeField::Tile::HasMeme() const
 {
 	return hasMeme;
+}
+
+void MemeField::Tile::SetNeighborMemes(int nMemes)
+{
+	assert(nNeighborMemes == -1);
+	nNeighborMemes = nMemes;
+}
+
+void MemeField::Tile::DrawTileNumber(const Vei2& gridPos, int n, Graphics& gfx) const
+{
+	switch (n)
+	{
+	case 0:
+		SpriteCodex::DrawTile0(gridPos, gfx);
+		break;
+	case 1:
+		SpriteCodex::DrawTile1(gridPos, gfx);
+		break;
+	case 2:
+		SpriteCodex::DrawTile2(gridPos, gfx);
+		break;
+	case 3:
+		SpriteCodex::DrawTile3(gridPos, gfx);
+		break;
+	case 4:
+		SpriteCodex::DrawTile4(gridPos, gfx);
+		break;
+	case 5:
+		SpriteCodex::DrawTile5(gridPos, gfx);
+		break;
+	case 6:
+		SpriteCodex::DrawTile6(gridPos, gfx);
+		break;
+	case 7:
+		SpriteCodex::DrawTile7(gridPos, gfx);
+		break;
+	case 8:
+		SpriteCodex::DrawTile8(gridPos, gfx);
+		break;
+	}
 }

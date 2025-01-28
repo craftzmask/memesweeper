@@ -20,9 +20,13 @@ class MemeField
 		bool HasFlagged() const;
 		void SpawnMeme();
 		bool HasMeme() const;
+		void SetNeighborMemes(int nMemes);
+	private:
+		void DrawTileNumber(const Vei2& gridPos, int n, Graphics& gfx) const;
 	private:
 		State state = State::Hidden;
 		bool hasMeme = false;
+		int nNeighborMemes = -1;
 	};
 
 public:
@@ -34,6 +38,7 @@ public:
 	void OnFlagClick(const Vei2& screenPos);
 	bool Contains(const Vei2& screenPos) const;
 	Vei2 ScreenToGrid(const Vei2& screenPos) const;
+	int GetNeightborMemes(const Vei2& gridPos) const;
 	bool isFucked = false;
 
 private:
