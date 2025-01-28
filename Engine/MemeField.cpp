@@ -35,13 +35,18 @@ MemeField::MemeField(int nMemes)
 
 void MemeField::Draw(Graphics& gfx) const
 {
-	gfx.DrawRect(0, 0, width * SpriteCodex::tileSize, height * SpriteCodex::tileSize, SpriteCodex::baseColor);
+	const int halfWidth = width * SpriteCodex::tileSize / 2;
+	const int halfHeight = height * SpriteCodex::tileSize / 2;
+	RectI rect = RectI::FromCenter(pos, halfWidth, halfHeight);
+	gfx.DrawRect(rect.GetExpanded(borderWidth), borderColor);
+	gfx.DrawRect(rect, SpriteCodex::baseColor);
 
+	const Vei2 offset = { rect.left, rect.top };
 	for (Vei2 gridPos = { 0, 0 }; gridPos.y < height; gridPos.y++)
 	{
 		for (gridPos.x = 0; gridPos.x < width; gridPos.x++)
 		{
-			TileAt(gridPos).Draw(gridPos * SpriteCodex::tileSize, isFucked, gfx);
+			TileAt(gridPos).Draw(offset + gridPos * SpriteCodex::tileSize, isFucked, gfx);
 		}
 	}
 }
@@ -84,12 +89,15 @@ void MemeField::OnFlagClick(const Vei2& screenPos)
 
 bool MemeField::Contains(const Vei2& screenPos) const
 {
-	return screenPos.x >= 0 && screenPos.x < width * SpriteCodex::tileSize && screenPos.y >= 0 && screenPos.y < height * SpriteCodex::tileSize;
+	RectI rect = RectI::FromCenter(pos, width * SpriteCodex::tileSize / 2, height * SpriteCodex::tileSize / 2);
+	return screenPos.x >= rect.left && screenPos.x < rect.right && screenPos.y >= rect.top && screenPos.y < rect.bottom;
 }
 
 Vei2 MemeField::ScreenToGrid(const Vei2& screenPos) const
 {
-	return screenPos / SpriteCodex::tileSize;
+	RectI rect = RectI::FromCenter(pos, width * SpriteCodex::tileSize / 2, height * SpriteCodex::tileSize / 2);
+	const Vei2 offset = { rect.left, rect.top };
+	return (screenPos - offset) / SpriteCodex::tileSize;
 }
 
 int MemeField::GetNeightborMemes(const Vei2& gridPos) const
