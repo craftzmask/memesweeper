@@ -37,7 +37,7 @@ public:
 	bool Contains(const Vei2& screenPos) const;
 	Vei2 ScreenToGrid(const Vei2& screenPos) const;
 	int GetNeightborMemes(const Vei2& gridPos) const;
-	bool isFucked = false;
+	bool IsFucked() const;
 
 private:
 	static constexpr Color borderColor = Colors::Blue;
@@ -46,4 +46,5 @@ private:
 	static constexpr int height = 20;
 	Vei2 pos = { 400, 300 }; // center of the screen
 	Tile field[width * height];
+	bool isFucked = false;
 };

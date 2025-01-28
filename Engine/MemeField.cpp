@@ -121,6 +121,11 @@ int MemeField::GetNeightborMemes(const Vei2& gridPos) const
 	return count;
 }
 
+bool MemeField::IsFucked() const
+{
+	return isFucked;
+}
+
 void MemeField::Tile::Draw(const Vei2& gridPos, bool isFucked, Graphics& gfx) const
 {
 	if (!isFucked)
