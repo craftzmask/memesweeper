@@ -31,7 +31,7 @@ void MemeField::Draw(Graphics& gfx) const
 	{
 		for (gridPos.x = 0; gridPos.x < width; gridPos.x++)
 		{
-			TileAt(gridPos).Draw(gridPos * SpriteCodex::tileSize, gfx);
+			TileAt(gridPos).Draw(gridPos * SpriteCodex::tileSize, isFucked, gfx);
 		}
 	}
 }
@@ -54,6 +54,10 @@ void MemeField::OnRevealClick(const Vei2& screenPos)
 	if (!tile.HasRevealed() && !tile.HasFlagged())
 	{
 		tile.Reveal();
+		if (tile.HasMeme())
+		{
+			isFucked = true;
+		}
 	}
 }
 
@@ -78,28 +82,71 @@ Vei2 MemeField::ScreenToGrid(const Vei2& screenPos) const
 	return screenPos / SpriteCodex::tileSize;
 }
 
-void MemeField::Tile::Draw(const Vei2& gridPos, Graphics& gfx) const
+void MemeField::Tile::Draw(const Vei2& gridPos, bool isFucked, Graphics& gfx) const
 {
-	switch (state)
+	if (!isFucked)
 	{
-	case State::Hidden:
-		SpriteCodex::DrawTileButton(gridPos, gfx);
-		break;
-	case State::Flagged:
-		SpriteCodex::DrawTileButton(gridPos, gfx);
-		SpriteCodex::DrawTileFlag(gridPos, gfx);
-		break;
-	case State::Revealed:
-		if (HasMeme())
+		switch (state)
 		{
-			SpriteCodex::DrawTileBomb(gridPos, gfx);
+		case State::Hidden:
+			SpriteCodex::DrawTileButton(gridPos, gfx);
+			break;
+		case State::Flagged:
+			SpriteCodex::DrawTileButton(gridPos, gfx);
+			SpriteCodex::DrawTileFlag(gridPos, gfx);
+			break;
+		case State::Revealed:
+			if (HasMeme())
+			{
+				SpriteCodex::DrawTileBomb(gridPos, gfx);
+			}
+			else
+			{
+				SpriteCodex::DrawTile0(gridPos, gfx);
+			}
+			break;
 		}
-		else
-		{
-			SpriteCodex::DrawTile0(gridPos, gfx);
-		}
-		break;
 	}
+	else
+	{
+		switch (state)
+		{
+		case State::Hidden:
+			if (HasMeme())
+			{
+				SpriteCodex::DrawTileBomb(gridPos, gfx);
+			}
+			else
+			{
+				SpriteCodex::DrawTileButton(gridPos, gfx);
+			}
+			break;
+		case State::Flagged:
+			if (HasMeme())
+			{
+				SpriteCodex::DrawTileBomb(gridPos, gfx);
+				SpriteCodex::DrawTileFlag(gridPos, gfx);
+			}
+			else
+			{
+				SpriteCodex::DrawTileBomb(gridPos, gfx);
+				SpriteCodex::DrawTileCross(gridPos, gfx);
+			}
+			break;
+		case State::Revealed:
+			if (HasMeme())
+			{
+				SpriteCodex::DrawTileBombRed(gridPos, gfx);
+				SpriteCodex::DrawTileBomb(gridPos, gfx);
+			}
+			else
+			{
+				SpriteCodex::DrawTile0(gridPos, gfx);
+			}
+			break;
+		}
+	}
+
 }
 
 void MemeField::Tile::Reveal()

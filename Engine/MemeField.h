@@ -13,7 +13,7 @@ class MemeField
 		};
 
 	public:
-		void Draw(const Vei2& gridPos, Graphics& gfx) const;
+		void Draw(const Vei2& gridPos, bool isFucked, Graphics& gfx) const;
 		void Reveal();
 		bool HasRevealed() const;
 		void ToggleFlag();
@@ -34,6 +34,7 @@ public:
 	void OnFlagClick(const Vei2& screenPos);
 	bool Contains(const Vei2& screenPos) const;
 	Vei2 ScreenToGrid(const Vei2& screenPos) const;
+	bool isFucked = false;
 
 private:
 	static constexpr int width = 20;
